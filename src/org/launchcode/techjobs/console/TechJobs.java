@@ -1,8 +1,6 @@
 package org.launchcode.techjobs.console;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -61,7 +59,7 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -110,7 +108,31 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.isEmpty()) System.out.println("Term not found");
+        else {
+            for (HashMap<String, String> job : someJobs) {
+                Iterator it = job.entrySet().iterator();
+                System.out.println("*****");
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    System.out.println(pair.getKey() + ": " + pair.getValue());
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+                //System.out.println("*****\n");
 
-        System.out.println("printJobs is not implemented yet");
+                    /*
+                    for (Map.Entry<String, String> type : job.entrySet()) {
+                    System.out.println("*****\nposition type: " + type.getValue() +
+                    "\nname: " + name.getValue() +
+                    "\nemployer: " + employer.getValue() +
+                    "\nlocation: " + location.getValue() +
+                    "\ncore competency: " + core_competency.getValue()
+                    );
+                    */
+            }
+        }
     }
+
+        //System.out.println(someJobs);
+
 }
